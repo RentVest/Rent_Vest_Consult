@@ -1,0 +1,27 @@
+// Main page layout styles
+.form-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(-90deg, #d7dff3 0%, #f9fafb 100%);
+    overflow: hidden;
+
+    // Responsive breakpoints
+    @media (max-width: 1200px) {
+        gap: 30px;
+    }
+
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+        padding: 15px;
+        gap: 15px;
+    }
+}

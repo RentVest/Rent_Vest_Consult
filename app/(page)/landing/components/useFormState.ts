@@ -28,7 +28,7 @@ export const useFormState = () => {
     setFormData(updatedFormData);
 
     // Real-time validation
-    const error = validateFieldRealTime(field, value, updatedFormData);
+    const error = validateFieldRealTime(field, value);
     if (error) {
       setValidationErrors((prev) => ({ ...prev, [field]: error }));
     } else if (validationErrors[field]) {
@@ -78,7 +78,7 @@ export const useFormState = () => {
     console.log('FormData updated:', updatedFormData);
 
     // Real-time validation for user type
-    const error = validateFieldRealTime('userType', type, updatedFormData);
+    const error = validateFieldRealTime('userType', type);
     if (error) {
       setValidationErrors((prev) => ({ ...prev, userType: error }));
     } else if (validationErrors.userType) {
@@ -103,7 +103,7 @@ export const useFormState = () => {
     setFormData(updatedFormData);
 
     // Real-time validation
-    const error = validateFieldRealTime(field, value, updatedFormData);
+    const error = validateFieldRealTime(field, value);
     if (error) {
       setValidationErrors((prev) => ({ ...prev, [field]: error }));
     } else if (validationErrors[field]) {
@@ -127,12 +127,8 @@ export const useFormState = () => {
     };
     setFormData(updatedFormData);
 
-    // Real-time validation - map some fields to validation keys
-    let validationKey = field;
-    if (field === 'rentToOwn') validationKey = 'landlordRentToOwn';
-    if (field === 'leaseLength') validationKey = 'landlordLeaseLength';
-    
-    const error = validateFieldRealTime(validationKey, value, updatedFormData);
+    // Real-time validation
+    const error = validateFieldRealTime(field, value as string);
     if (error) {
       setValidationErrors((prev) => ({ ...prev, [field]: error }));
     } else if (validationErrors[field]) {

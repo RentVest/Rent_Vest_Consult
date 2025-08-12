@@ -24,7 +24,7 @@ const FormComponent: React.FC = () => {
   const animationConfig = {
     initial: { opacity: 0, transform: 'scaleY(0.98)' },
     animate: { opacity: 1, transform: 'scaleY(1)' },
-    transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 1 },
     style: { transformOrigin: 'top center' },
   };
 
@@ -45,7 +45,6 @@ const FormComponent: React.FC = () => {
   } = useFormState();
 
   // Local state for form submission
-  const [direction, setDirection] = React.useState(0);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
 
@@ -75,12 +74,10 @@ const FormComponent: React.FC = () => {
 
   // Navigation handlers
   const handleContinue = () => {
-    setDirection(1);
     setCurrentStep(2);
   };
 
   const handleGoBack = () => {
-    setDirection(-1);
     goBack();
   };
 
@@ -89,7 +86,13 @@ const FormComponent: React.FC = () => {
     return (
       <div className='form-panel'>
         <div className='form-container'>
-          <motion.div key='success' {...animationConfig}>
+          <motion.div
+            key='success'
+            initial={{ opacity: 0, transform: 'scale(0.95)' }}
+            animate={{ opacity: 1, transform: 'scale(1)' }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            style={{ transformOrigin: 'center' }}
+          >
             <div className='form-section success-section'>
               <div className='success-icon'>
                 <Image src={Check} alt='Check' />
