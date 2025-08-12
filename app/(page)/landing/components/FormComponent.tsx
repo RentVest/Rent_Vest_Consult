@@ -11,6 +11,7 @@ import { useFormState } from '@/app/(page)/landing/components/useFormState';
 // Components
 import Step1Component from './Step1Component';
 import Step2Component from './Step2Component';
+import Confetti from '@/app/reusable/Confetti';
 
 // Assets
 import Check from '../../../../public/check.svg';
@@ -20,12 +21,23 @@ import './FormComponent.scss';
 
 // Main form component - handles multi-step consultation form with animations
 const FormComponent: React.FC = () => {
-  // Animation configuration for smooth transitions
-  const animationConfig = {
-    initial: { opacity: 0, transform: 'scaleY(0.98)' },
-    animate: { opacity: 1, transform: 'scaleY(1)' },
-    transition: { duration: 1 },
-    style: { transformOrigin: 'top center' },
+  // State for tracking animation direction
+  const [isGoingForward, setIsGoingForward] = React.useState(true);
+
+  // Animation variants for bidirectional sliding
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 20 : -20,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    // exit: (direction: number) => ({
+    //   x: direction > 0 ? 20 : -20,
+    //   opacity: 0,
+    // }),
   };
 
   // Form state management
@@ -74,10 +86,12 @@ const FormComponent: React.FC = () => {
 
   // Navigation handlers
   const handleContinue = () => {
+    setIsGoingForward(true);
     setCurrentStep(2);
   };
 
   const handleGoBack = () => {
+    setIsGoingForward(false);
     goBack();
   };
 
@@ -85,14 +99,9 @@ const FormComponent: React.FC = () => {
   if (isSubmitted) {
     return (
       <div className='form-panel'>
+        <Confetti />
         <div className='form-container'>
-          <motion.div
-            key='success'
-            initial={{ opacity: 0, transform: 'scale(0.95)' }}
-            animate={{ opacity: 1, transform: 'scale(1)' }}
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            style={{ transformOrigin: 'center' }}
-          >
+          <motion.div key='success'>
             <div className='form-section success-section'>
               <div className='success-icon'>
                 <Image src={Check} alt='Check' />
@@ -116,9 +125,17 @@ const FormComponent: React.FC = () => {
       <div className='form-container'>
         <form onSubmit={handleSubmit} className='rental-form'>
           <div>
-            <AnimatePresence initial={false} mode='wait'>
+            <AnimatePresence initial={false} mode='wait' custom={isGoingForward ? 1 : -1}>
               {currentStep === 1 && (
-                <motion.div key='step1' {...animationConfig}>
+                <motion.div
+                  key='step1'
+                  custom={isGoingForward ? 1 : -1}
+                  variants={slideVariants}
+                  initial='enter'
+                  animate='center'
+                  exit='exit'
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                >
                   <Step1Component
                     formData={formData}
                     validationErrors={validationErrors}
@@ -132,7 +149,15 @@ const FormComponent: React.FC = () => {
               )}
 
               {currentStep === 2 && (
-                <motion.div key='step2' {...animationConfig}>
+                <motion.div
+                  key='step2'
+                  custom={isGoingForward ? 1 : -1}
+                  variants={slideVariants}
+                  initial='enter'
+                  animate='center'
+                  exit='exit'
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                >
                   <Step2Component
                     formData={formData}
                     validationErrors={validationErrors}

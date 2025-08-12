@@ -67,15 +67,15 @@
         margin-bottom: 24px;
 
         img {
-            width: 64px;
-            height: 64px;
+            width: 40px;
+            height: 40px;
         }
     }
 
     .success-title {
-        font-size: 28px;
+        font-size: 22px;
         font-weight: 600;
-        color: #1a1a1a;
+        color: $theme-primary;
         margin-bottom: 16px;
     }
 
