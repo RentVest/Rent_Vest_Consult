@@ -1,0 +1,42 @@
+.spinner-loader {
+    // font-size: 0;
+    // left: 50%;
+    // position: absolute;
+    // top: 50%;
+    // transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+
+    &.--dark {
+        & circle {
+            stroke: black;
+        }
+    }
+
+    & circle {
+        stroke: #fff;
+        animation: spinner 2s linear infinite;
+        transform-origin: 50% 50%;
+        stroke-dasharray: 132;
+        fill: transparent;
+    }
+
+    @keyframes spinner {
+        0% {
+            stroke-dashoffset: 132;
+            transform: rotate(-90deg);
+        }
+
+        50% {
+            stroke-dashoffset: 28;
+            transform: rotate(270deg);
+        }
+
+        100% {
+            stroke-dashoffset: 132;
+            transform: rotate(630deg);
+        }
+    }
+
+
+}

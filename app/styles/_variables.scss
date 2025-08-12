@@ -1,0 +1,192 @@
+@use "sass:map";
+
+
+// Breakpoints
+$breakpoints: (
+    ss: 375px,
+    // for small screen e.g. iphone x,5
+    ts: 450px,
+    // for typical screen e.g. iphone 6,7,8,13
+    ds: 520px,
+    // for desktop minimum screen size
+    t: 800px,
+    // for tablet
+    sd: 1300px,
+    // for small screen desktop
+    md: 1600px,
+    // for medium screen desktop
+    ld: 1920px,
+    // for large screen desktop
+);
+
+// Media Query Mixins
+@mixin mq-d($key) {
+    $size: map-get($breakpoints, $key);
+
+    @media (max-width: $size) {
+        @content;
+    }
+}
+
+@mixin mq-dc($value) {
+    @media (max-width: $value) {
+        @content;
+    }
+}
+
+@mixin mq-m($key) {
+    $size: map-get($breakpoints, $key);
+
+    @media (min-width: $size) {
+        @content;
+    }
+}
+
+@mixin mq-mc($value) {
+    @media (min-width: $value) {
+        @content;
+    }
+}
+
+// Utility Mixins
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+@mixin theme-input-focus {
+    transition: 0.2s ease;
+
+    &:focus {
+        outline: 0;
+        border-color: $theme-secondary;
+        background-color: #fff;
+        -webkit-box-shadow: 0 0 0 4px rgba($theme-secondary, 0.1);
+        box-shadow: 0 0 0 4px rgba($theme-secondary, 0.1);
+    }
+}
+
+
+@mixin input-clear-button {
+    @include flex-center;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    background-color: transparent;
+
+    &:hover {
+        background-color: #eeeeee;
+        color: #333;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+}
+
+@mixin theme-button-interactive {
+    border-color: #0072f4;
+    background-color: #f4f9ff;
+}
+
+@mixin button-select-toggle-style {
+    border: 1px solid $border-primary;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: all 0.2s ease;
+    position: relative;
+
+
+    &.selected {
+        background-color: $bg-light;
+        border: 1px solid darken($border-primary, 10%);
+
+    }
+
+    &:hover {
+        background-color: $bg-light;
+    }
+
+
+    &.selected::after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background-image: url('../../public/check.svg');
+        background-size: 15px;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
+@mixin button-base {
+    border-radius: 5px;
+    transition: 0.2s;
+    font-size: 1.4rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    justify-content: center;
+}
+
+@mixin button-outline {
+    @include button-base;
+    border: 1px solid $border-primary;
+    background-color: white;
+    color: $theme-primary;
+
+    &:hover {
+        background-color: $hover-primary;
+        border-color: darken($border-primary, 10%);
+    }
+}
+
+@mixin button-primary {
+    @include button-base;
+    background-color: $theme-primary;
+    color: white;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+@mixin button-secondary {
+    @include button-base;
+    background-color: $theme-secondary;
+    color: white;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+// Theme Colors
+$theme-primary: #1A2231;
+$theme-secondary: #0072f4;
+$theme-bg-secondary: lighten($theme-secondary, 50%);
+$bg-light: #f8f9fa;
+$text-theme: #2c3952;
+$text-primary: #6e6d7a;
+$text-gray: rgb(102, 102, 102);
+$border-primary: #ddd;
+$border-light: #eceef1;
+$alert: #f1493d;
+$success: #16D591;
+$hover-primary: rgb(250, 250, 250);
