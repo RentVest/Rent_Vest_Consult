@@ -8,26 +8,30 @@ export interface ValidationResult {
 }
 
 // Individual field validators
-export const validateRequiredField = (value: string, fieldName: string): string | null => {
-  if (!value?.trim()) {
+export const validateRequiredField = (value: any, fieldName: string): string | null => {
+  if (!value || (typeof value === 'string' && !value.trim())) {
     return `${fieldName} is required`;
   }
   return null;
 };
 
-export const validateEmail = (email: string): string | null => {
+export const validateEmail = (email: any): string | null => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email?.trim()) {
+  if (!email || (typeof email === 'string' && !email.trim())) {
     return 'Email is required';
   }
-  if (!emailRegex.test(email.trim())) {
+  if (typeof email === 'string' && !emailRegex.test(email.trim())) {
     return 'Please enter a valid email address';
   }
   return null;
 };
 
-export const validatePhoneNumber = (phone: string): string | null => {
-  const cleanedPhone = phone?.replace(/\D/g, '') || '';
+export const validatePhoneNumber = (phone: any): string | null => {
+  if (!phone) {
+    return 'Phone number is required';
+  }
+  const phoneString = String(phone);
+  const cleanedPhone = phoneString.replace(/\D/g, '');
   if (!cleanedPhone) {
     return 'Phone number is required';
   }
@@ -37,8 +41,8 @@ export const validatePhoneNumber = (phone: string): string | null => {
   return null;
 };
 
-export const validateUserType = (userType: string): string | null => {
-  if (!userType?.trim()) {
+export const validateUserType = (userType: any): string | null => {
+  if (!userType || (typeof userType === 'string' && !userType.trim())) {
     return 'Please select whether you are a landlord or tenant';
   }
   if (!['landlord', 'tenant'].includes(userType)) {
@@ -47,11 +51,12 @@ export const validateUserType = (userType: string): string | null => {
   return null;
 };
 
-export const validateBudget = (budget: string): string | null => {
-  if (!budget?.trim()) {
+export const validateBudget = (budget: any): string | null => {
+  if (!budget || (typeof budget === 'string' && !budget.trim())) {
     return 'Budget is required';
   }
-  const numericValue = parseFloat(budget);
+  const budgetString = String(budget);
+  const numericValue = parseFloat(budgetString);
   if (isNaN(numericValue)) {
     return 'Budget must be a valid number';
   }
@@ -67,11 +72,12 @@ export const validateBudget = (budget: string): string | null => {
   return null;
 };
 
-export const validateRent = (rent: string): string | null => {
-  if (!rent?.trim()) {
+export const validateRent = (rent: any): string | null => {
+  if (!rent || (typeof rent === 'string' && !rent.trim())) {
     return 'Rent amount is required';
   }
-  const numericValue = parseFloat(rent);
+  const rentString = String(rent);
+  const numericValue = parseFloat(rentString);
   if (isNaN(numericValue)) {
     return 'Rent must be a valid number';
   }
@@ -187,7 +193,7 @@ export const validateStep2 = (formData: FormData): ValidationResult => {
 };
 
 // Real-time validation for individual fields
-export const validateFieldRealTime = (field: string, value: string): string | null => {
+export const validateFieldRealTime = (field: string, value: any): string | null => {
   switch (field) {
     case 'name':
       return validateRequiredField(value, 'Full name');
@@ -243,33 +249,33 @@ export const validateFieldRealTime = (field: string, value: string): string | nu
 // Check if form has minimum required data for enabling continue/submit button
 export const hasMinimumRequiredDataStep1 = (formData: FormData): boolean => {
   return Boolean(
-    formData.name?.trim() &&
-    formData.email?.trim() &&
-    formData.phoneNumber?.trim() &&
-    formData.userType?.trim()
+    formData.name && (typeof formData.name === 'string' ? formData.name.trim() : true) &&
+    formData.email && (typeof formData.email === 'string' ? formData.email.trim() : true) &&
+    formData.phoneNumber && (typeof formData.phoneNumber === 'string' ? formData.phoneNumber.trim() : true) &&
+    formData.userType && (typeof formData.userType === 'string' ? formData.userType.trim() : true)
   );
 };
 
 export const hasMinimumRequiredDataStep2 = (formData: FormData): boolean => {
   if (formData.userType === 'tenant' && formData.tenantPreferences) {
     return Boolean(
-      formData.tenantPreferences.housingType?.trim() &&
-      formData.tenantPreferences.location?.trim() &&
-      formData.tenantPreferences.moveInTime?.trim() &&
-      formData.tenantPreferences.rentToOwn?.trim() &&
-      formData.tenantPreferences.leaseLength?.trim() &&
-      formData.tenantPreferences.hasPets?.trim() &&
-      formData.tenantPreferences.profession?.trim()
+      formData.tenantPreferences.housingType && (typeof formData.tenantPreferences.housingType === 'string' ? formData.tenantPreferences.housingType.trim() : true) &&
+      formData.tenantPreferences.location && (typeof formData.tenantPreferences.location === 'string' ? formData.tenantPreferences.location.trim() : true) &&
+      formData.tenantPreferences.moveInTime && (typeof formData.tenantPreferences.moveInTime === 'string' ? formData.tenantPreferences.moveInTime.trim() : true) &&
+      formData.tenantPreferences.rentToOwn && (typeof formData.tenantPreferences.rentToOwn === 'string' ? formData.tenantPreferences.rentToOwn.trim() : true) &&
+      formData.tenantPreferences.leaseLength && (typeof formData.tenantPreferences.leaseLength === 'string' ? formData.tenantPreferences.leaseLength.trim() : true) &&
+      formData.tenantPreferences.hasPets && (typeof formData.tenantPreferences.hasPets === 'string' ? formData.tenantPreferences.hasPets.trim() : true) &&
+      formData.tenantPreferences.profession && (typeof formData.tenantPreferences.profession === 'string' ? formData.tenantPreferences.profession.trim() : true)
     );
   }
 
   if (formData.userType === 'landlord' && formData.landlordDetails) {
     return Boolean(
-      formData.landlordDetails.propertyType?.trim() &&
-      formData.landlordDetails.availability?.trim() &&
-      formData.landlordDetails.rentToOwn?.trim() &&
-      formData.landlordDetails.utilitiesIncluded?.trim() &&
-      formData.landlordDetails.screeningHelp?.trim() &&
+      formData.landlordDetails.propertyType && (typeof formData.landlordDetails.propertyType === 'string' ? formData.landlordDetails.propertyType.trim() : true) &&
+      formData.landlordDetails.availability && (typeof formData.landlordDetails.availability === 'string' ? formData.landlordDetails.availability.trim() : true) &&
+      formData.landlordDetails.rentToOwn && (typeof formData.landlordDetails.rentToOwn === 'string' ? formData.landlordDetails.rentToOwn.trim() : true) &&
+      formData.landlordDetails.utilitiesIncluded && (typeof formData.landlordDetails.utilitiesIncluded === 'string' ? formData.landlordDetails.utilitiesIncluded.trim() : true) &&
+      formData.landlordDetails.screeningHelp && (typeof formData.landlordDetails.screeningHelp === 'string' ? formData.landlordDetails.screeningHelp.trim() : true) &&
       formData.landlordDetails.leaseLength?.length > 0
     );
   }

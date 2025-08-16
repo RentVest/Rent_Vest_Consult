@@ -1,0 +1,75 @@
+@import '../../styles/variables';
+
+.filter-panel {
+  .filters {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .search-input,
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      transition: all 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+    }
+
+    .search-input {
+      min-width: 240px;
+      
+      &::placeholder {
+        color: #9ca3af;
+      }
+    }
+
+    .filter-select {
+      min-width: 120px;
+      cursor: pointer;
+    }
+
+    .clear-btn {
+      padding: 8px 16px;
+      background-color: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #e5e7eb;
+        color: #374151;
+      }
+    }
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .filter-panel {
+    .filters {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+
+      .search-input {
+        min-width: auto;
+      }
+
+      .filter-select {
+        min-width: auto;
+      }
+    }
+  }
+}

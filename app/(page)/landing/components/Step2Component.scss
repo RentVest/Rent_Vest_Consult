@@ -19,6 +19,31 @@
     padding-bottom: 16px;
     border-bottom: 1px solid #eaeaea;
 
+    // Large screens optimization - Enhanced for 1600-2700px range
+    @media (min-width: 1600px) {
+        gap: 14px;
+        margin-bottom: 28px;
+        padding-bottom: 18px;
+    }
+
+    @media (min-width: 1800px) {
+        gap: 16px;
+        margin-bottom: 32px;
+        padding-bottom: 20px;
+    }
+
+    @media (min-width: 2100px) {
+        gap: 18px;
+        margin-bottom: 36px;
+        padding-bottom: 22px;
+    }
+
+    @media (min-width: 2400px) {
+        gap: 20px;
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+    }
+
     .back-button {
         width: fit-content;
         background: transparent;
@@ -35,6 +60,35 @@
         align-items: center;
         gap: 6px;
         margin-bottom: 10px;
+
+        // Large screens optimization - Enhanced for 1600-2700px range
+        @media (min-width: 1600px) {
+            font-size: 16px;
+            padding: 10px 14px;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        @media (min-width: 1800px) {
+            font-size: 17px;
+            padding: 11px 15px;
+            gap: 9px;
+            margin-bottom: 13px;
+        }
+
+        @media (min-width: 2100px) {
+            font-size: 18px;
+            padding: 12px 16px;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        @media (min-width: 2400px) {
+            font-size: 20px;
+            padding: 14px 18px;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
 
         &:hover {
             background: #f9fafb;
@@ -53,6 +107,23 @@
         margin-bottom: 0;
         align-items: center;
 
+        // Large screens optimization - Enhanced for 1600-2700px range
+        @media (min-width: 1600px) {
+            font-size: 17px;
+        }
+
+        @media (min-width: 1800px) {
+            font-size: 18px;
+        }
+
+        @media (min-width: 2100px) {
+            font-size: 19px;
+        }
+
+        @media (min-width: 2400px) {
+            font-size: 21px;
+        }
+
         span {
             background-color: #0072f4;
             color: white;
@@ -61,12 +132,53 @@
             padding: 4px 8px;
             border-radius: 4px;
             margin-left: 10px;
+
+            // Large screens optimization - Enhanced for 1600-2700px range
+            @media (min-width: 1600px) {
+                font-size: 13px;
+                padding: 5px 9px;
+                margin-left: 12px;
+            }
+
+            @media (min-width: 1800px) {
+                font-size: 14px;
+                padding: 5px 10px;
+                margin-left: 13px;
+            }
+
+            @media (min-width: 2100px) {
+                font-size: 15px;
+                padding: 6px 11px;
+                margin-left: 14px;
+            }
+
+            @media (min-width: 2400px) {
+                font-size: 16px;
+                padding: 7px 12px;
+                margin-left: 16px;
+            }
         }
     }
 }
 
 .form-group {
     margin-bottom: 20px;
+
+    @media (min-width: 1600px) {
+        margin-bottom: 24px;
+    }
+
+    @media (min-width: 1800px) {
+        margin-bottom: 28px;
+    }
+
+    @media (min-width: 2100px) {
+        margin-bottom: 32px;
+    }
+
+    @media (min-width: 2400px) {
+        margin-bottom: 36px;
+    }
 
     &:last-child {
         margin-bottom: 0;
@@ -88,6 +200,27 @@
         width: 100%;
         word-wrap: break-word;
         overflow-wrap: break-word;
+
+        // Large screens optimization - Enhanced for 1600-2700px range
+        @media (min-width: 1600px) {
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 1800px) {
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        @media (min-width: 2100px) {
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        @media (min-width: 2400px) {
+            font-size: 25px;
+            margin-bottom: 18px;
+        }
     }
 
     input,
@@ -105,6 +238,35 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
         line-height: 20px;
         box-sizing: border-box;
+
+        // Large screens optimization - Enhanced for 1600-2700px range
+        @media (min-width: 1600px) {
+            height: 50px;
+            font-size: 15px;
+            padding: 0px 16px;
+            border-radius: 7px;
+        }
+
+        @media (min-width: 1800px) {
+            height: 55px;
+            font-size: 16px;
+            padding: 0px 18px;
+            border-radius: 8px;
+        }
+
+        @media (min-width: 2100px) {
+            height: 60px;
+            font-size: 17px;
+            padding: 0px 20px;
+            border-radius: 9px;
+        }
+
+        @media (min-width: 2400px) {
+            height: 70px;
+            font-size: 20px;
+            padding: 0px 24px;
+            border-radius: 12px;
+        }
 
         &:hover:not(:focus):not(:disabled) {
             border-color: #9ca3af;
@@ -158,6 +320,27 @@
         padding: 12px 14px;
         height: auto;
         line-height: 20px;
+
+        // Large screens optimization - Enhanced for 1600-2700px range
+        @media (min-width: 1600px) {
+            min-height: 110px;
+            padding: 14px 16px;
+        }
+
+        @media (min-width: 1800px) {
+            min-height: 120px;
+            padding: 16px 18px;
+        }
+
+        @media (min-width: 2100px) {
+            min-height: 130px;
+            padding: 18px 20px;
+        }
+
+        @media (min-width: 2400px) {
+            min-height: 150px;
+            padding: 22px 24px;
+        }
     }
 
     // Checkbox group styling
@@ -165,6 +348,23 @@
         display: flex;
         flex-direction: column;
         gap: 6px;
+
+        // Large screens optimization - Enhanced for 1600-2700px range
+        @media (min-width: 1600px) {
+            gap: 8px;
+        }
+
+        @media (min-width: 1800px) {
+            gap: 9px;
+        }
+
+        @media (min-width: 2100px) {
+            gap: 10px;
+        }
+
+        @media (min-width: 2400px) {
+            gap: 12px;
+        }
 
         .checkbox-option {
             display: flex;
@@ -180,6 +380,27 @@
             padding: 0;
             border: none;
             background: none;
+
+            // Large screens optimization - Enhanced for 1600-2700px range
+            @media (min-width: 1600px) {
+                font-size: 16px;
+                line-height: 22px;
+            }
+
+            @media (min-width: 1800px) {
+                font-size: 17px;
+                line-height: 24px;
+            }
+
+            @media (min-width: 2100px) {
+                font-size: 18px;
+                line-height: 26px;
+            }
+
+            @media (min-width: 2400px) {
+                font-size: 20px;
+                line-height: 28px;
+            }
 
             input[type="checkbox"] {
                 display: none;
@@ -200,6 +421,31 @@
                 align-items: center;
                 justify-content: center;
                 margin-top: 3px;
+
+                // Large screens optimization - Enhanced for 1600-2700px range
+                @media (min-width: 1600px) {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 14px;
+                }
+
+                @media (min-width: 1800px) {
+                    width: 22px;
+                    height: 22px;
+                    margin-right: 15px;
+                }
+
+                @media (min-width: 2100px) {
+                    width: 24px;
+                    height: 24px;
+                    margin-right: 16px;
+                }
+
+                @media (min-width: 2400px) {
+                    width: 26px;
+                    height: 26px;
+                    margin-right: 18px;
+                }
 
                 &::after {
                     content: '';
@@ -241,6 +487,23 @@
     display: flex;
     gap: 20px;
 
+    // Large screens optimization - Enhanced for 1600-2700px range
+    @media (min-width: 1600px) {
+        gap: 24px;
+    }
+
+    @media (min-width: 1800px) {
+        gap: 28px;
+    }
+
+    @media (min-width: 2100px) {
+        gap: 32px;
+    }
+
+    @media (min-width: 2400px) {
+        gap: 36px;
+    }
+
     .selection {
         display: flex;
         align-items: center;
@@ -252,6 +515,27 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
         border-radius: 6px;
         margin-bottom: 0;
+
+        // Large screens optimization - Enhanced for 1600-2700px range
+        @media (min-width: 1600px) {
+            font-size: 16px;
+            line-height: 22px;
+        }
+
+        @media (min-width: 1800px) {
+            font-size: 17px;
+            line-height: 24px;
+        }
+
+        @media (min-width: 2100px) {
+            font-size: 20px;
+            line-height: 26px;
+        }
+
+        @media (min-width: 2400px) {
+            font-size: 23px;
+            line-height: 28px;
+        }
 
         @media (max-width: 400px) {
             font-size: 12px;
@@ -273,6 +557,31 @@
             position: relative;
             flex-shrink: 0;
             background: white;
+
+            // Large screens optimization - Enhanced for 1600-2700px range
+            @media (min-width: 1600px) {
+                width: 18px;
+                height: 18px;
+                margin-right: 6px;
+            }
+
+            @media (min-width: 1800px) {
+                width: 20px;
+                height: 20px;
+                margin-right: 7px;
+            }
+
+            @media (min-width: 2100px) {
+                width: 22px;
+                height: 22px;
+                margin-right: 8px;
+            }
+
+            @media (min-width: 2400px) {
+                width: 24px;
+                height: 24px;
+                margin-right: 10px;
+            }
         }
 
         &.selected {
@@ -322,6 +631,35 @@
     height: 40px;
     width: 100%;
 
+    // Large screens optimization - Enhanced for 1600-2700px range
+    @media (min-width: 1600px) {
+        height: 44px;
+        font-size: 17px;
+        padding: 14px 28px;
+        border-radius: 7px;
+    }
+
+    @media (min-width: 1800px) {
+        height: 50px;
+        font-size: 20px;
+        padding: 15px 30px;
+        border-radius: 8px;
+    }
+
+    @media (min-width: 2100px) {
+        height: 70px;
+        font-size: 23px;
+        padding: 16px 32px;
+        border-radius: 9px;
+    }
+
+    @media (min-width: 2400px) {
+        height: 80px;
+        font-size: 25px;
+        padding: 19px 38px;
+        border-radius: 12px;
+    }
+
     &:hover {
         opacity: 0.8;
     }
@@ -330,5 +668,135 @@
         opacity: 0.7;
         cursor: not-allowed;
         pointer-events: none;
+    }
+}
+
+
+.phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    height: 35px;
+
+    // Large screens optimization - Enhanced for 1600-2700px range
+    @media (min-width: 1600px) {
+        height: 45px;
+        font-size: 17px;
+    }
+
+    @media (min-width: 1800px) {
+        height: 50px;
+        font-size: 19px;
+    }
+
+    @media (min-width: 2100px) {
+        height: 55px;
+        font-size: 22px;
+    }
+
+    @media (min-width: 2400px) {
+        height: 70px;
+        font-size: 25px;
+    }
+
+    &:hover:not(:focus-within) {
+        border-color: #9ca3af;
+    }
+
+    &:focus-within {
+        border-color: #0072f4;
+        box-shadow: 0 0 0 3px rgba(0, 114, 244, 0.1);
+    }
+
+    .country-prefix {
+        background: #f9fafb;
+        border-right: 1px solid #d1d5db;
+        height: 100%;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #1f2937;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        line-height: 20px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        font-weight: 500;
+    }
+
+    input {
+        flex: 1;
+        border: none;
+        padding: 0 14px;
+        height: 100%;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background: white;
+        font-size: 14px;
+        color: #1f2937;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+
+        &:disabled {
+            background: #f9fafb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+    }
+
+    &.disabled {
+        background: #f9fafb;
+        border-color: #e5e7eb;
+        cursor: not-allowed;
+
+        .country-prefix {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+    }
+
+    &.error {
+        border-color: #df1b41;
+        box-shadow: 0 0 0 3px rgba(223, 27, 65, 0.1);
+    }
+
+}
+
+
+.logo {
+    width: 130px;
+    margin-bottom: 5px;
+    height: auto;
+
+    // Large screens optimization - Enhanced for 1600-2700px range
+    @media (min-width: 1600px) {
+        width: 150px;
+        margin-bottom: 6px;
+    }
+
+    @media (min-width: 1800px) {
+        width: 160px;
+        margin-bottom: 7px;
+    }
+
+    @media (min-width: 2100px) {
+        width: 170px;
+        margin-bottom: 8px;
+    }
+
+    @media (min-width: 2400px) {
+        width: 180px;
+        margin-bottom: 10px;
     }
 }

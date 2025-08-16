@@ -7,6 +7,29 @@
     width: 100vw;
     background: linear-gradient(-90deg, #d7dff3 0%, #f9fafb 100%);
     overflow: hidden;
+    margin: 0 auto;
+
+
+    // Large screens optimization - Enhanced for 1600-2700px range
+    @media (min-width: 1513px) {
+        gap: 80px;
+    }
+
+    @media (min-width: 1600px) {
+        gap: 100px;
+    }
+
+    @media (min-width: 1800px) {
+        gap: 120px;
+    }
+
+    @media (min-width: 2100px) {
+        gap: 140px;
+    }
+
+    @media (min-width: 2400px) {
+        gap: 160px;
+    }
 
     // Responsive breakpoints
     @media (max-width: 1200px) {
@@ -16,12 +39,11 @@
     @media (max-width: 992px) {
         grid-template-columns: 1fr;
         gap: 20px;
-        padding: 20px;
         overflow-y: auto;
     }
 
     @media (max-width: 768px) {
-        padding: 15px;
         gap: 15px;
+        background: linear-gradient(0deg, #d7dff3 0%, #f9fafb 100%);
     }
 }

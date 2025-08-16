@@ -7,7 +7,7 @@ import React from 'react';
 import './index.scss';
 
 // Components
-import InfoPanel from '@/app/(page)/landing/components/InfoPanel';
+import InfoPanel from '@/app/(page)/landing/components/InfoPanel_V2';
 import FormComponent from '@/app/(page)/landing/components/FormComponent';
 
 // Main page component - RentVest consultation form

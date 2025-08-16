@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // Custom hooks and utilities
 import { useFormState } from '@/app/(page)/landing/components/useFormState';
+import { consultingApi, validateApiResponse, getErrorMessage } from '@/app/services/consultingApi';
 
 // Components
 import Step1Component from './Step1Component';
@@ -59,26 +60,40 @@ const FormComponent: React.FC = () => {
   // Local state for form submission
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [submissionError, setSubmissionError] = React.useState<string | null>(null);
 
-  // Mock API call for form submission
+  // Real API call for form submission
   const submitFormData = async () => {
-    // Mock API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log('Form submitted:', formData);
-    return { success: true };
+    console.log('Submitting form data:', formData);
+    
+    const response = await consultingApi.submitConsultingData(formData);
+    
+    if (validateApiResponse(response)) {
+      console.log('Form submitted successfully:', response.data);
+      return { success: true, data: response.data };
+    } else {
+      const errorMessage = getErrorMessage(response);
+      console.error('Form submission failed:', errorMessage);
+      throw new Error(errorMessage);
+    }
   };
 
   // Handle form submission with loading state
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmissionError(null);
 
     try {
-      await submitFormData();
-      setIsSubmitted(true);
+      const result = await submitFormData();
+      if (result.success) {
+        setIsSubmitted(true);
+        console.log('Submission successful with ID:', result.data?.id);
+      }
     } catch (error) {
       console.error('Submission failed:', error);
-      alert('Submission failed. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Submission failed. Please try again.';
+      setSubmissionError(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -167,6 +182,7 @@ const FormComponent: React.FC = () => {
                     goBack={handleGoBack}
                     onSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
+                    submissionError={submissionError}
                   />
                 </motion.div>
               )}

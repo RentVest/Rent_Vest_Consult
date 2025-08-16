@@ -22,6 +22,7 @@ interface Step2Props {
   goBack: () => void;
   onSubmit: (e: React.FormEvent) => void;
   isSubmitting?: boolean;
+  submissionError?: string | null;
 }
 
 // Step 2 component - collects detailed preferences based on user type (Tenant/Landlord)
@@ -34,6 +35,7 @@ const Step2Component: React.FC<Step2Props> = ({
   goBack,
   onSubmit,
   isSubmitting = false,
+  submissionError = null,
 }) => {
   // Tenant form - collects housing preferences and requirements
   if (formData.userType === 'tenant') {
@@ -183,6 +185,21 @@ const Step2Component: React.FC<Step2Props> = ({
             rows={3}
           />
         </div>
+
+        {/* Error display */}
+        {submissionError && (
+          <div className='error-message' style={{ 
+            color: '#e74c3c', 
+            backgroundColor: '#fdf2f2', 
+            border: '1px solid #f5c6cb', 
+            borderRadius: '4px', 
+            padding: '12px', 
+            marginBottom: '16px',
+            fontSize: '14px'
+          }}>
+            <strong>Submission failed:</strong> {submissionError}
+          </div>
+        )}
 
         {/* Submit button */}
         <div className='form-submit'>
@@ -343,6 +360,21 @@ const Step2Component: React.FC<Step2Props> = ({
             rows={3}
           />
         </div>
+
+        {/* Error display */}
+        {submissionError && (
+          <div className='error-message' style={{ 
+            color: '#e74c3c', 
+            backgroundColor: '#fdf2f2', 
+            border: '1px solid #f5c6cb', 
+            borderRadius: '4px', 
+            padding: '12px', 
+            marginBottom: '16px',
+            fontSize: '14px'
+          }}>
+            <strong>Submission failed:</strong> {submissionError}
+          </div>
+        )}
 
         {/* Submit button */}
         <div className='form-submit'>

@@ -1,0 +1,226 @@
+@import '../styles/variables';
+
+.dashboard-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+
+    h1 {
+      margin: 0;
+      color: #1e293b;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+
+      .btn-secondary,
+      .btn-primary {
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      .btn-secondary {
+        background-color: white;
+        color: #64748b;
+        border: 1px solid #cbd5e1;
+
+        &:hover:not(:disabled) {
+          background-color: #f8fafc;
+          border-color: #94a3b8;
+        }
+      }
+
+      .btn-primary {
+        background-color: #3b82f6;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #2563eb;
+        }
+      }
+    }
+  }
+
+  .dashboard-content {
+    max-width: 800px;
+    margin: 0 auto;
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .stats {
+        .total-count {
+          font-size: 14px;
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        .filter-count {
+          font-size: 14px;
+          color: #94a3b8;
+          margin-left: 8px;
+        }
+      }
+    }
+
+    .error-message {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+
+      .retry-btn {
+        background: none;
+        border: none;
+        color: #dc2626;
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 14px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
+    .submissions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+
+      h3 {
+        color: #64748b;
+        margin-bottom: 8px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      p {
+        color: #94a3b8;
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+
+      .page-info {
+        color: #64748b;
+        font-size: 14px;
+      }
+
+      .page-controls {
+        display: flex;
+        gap: 8px;
+
+        .page-btn {
+          width: 36px;
+          height: 36px;
+          background-color: white;
+          color: #64748b;
+          border: 1px solid #cbd5e1;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+
+          &:hover:not(:disabled) {
+            background-color: #f8fafc;
+            border-color: #94a3b8;
+          }
+
+          &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+
+    .dashboard-header {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .dashboard-content {
+      .content-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .pagination {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+    }
+  }
+}

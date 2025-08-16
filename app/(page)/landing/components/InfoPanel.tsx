@@ -54,6 +54,11 @@ const InfoPanel: React.FC = () => {
             About us
             <Image src={link} alt='Link' className='link-image' />
           </button>
+
+          <button type='button' className='cta-button --outline' onClick={() => window.open('/dashboard', '_self')}>
+            View Submissions
+            <Image src={link} alt='Link' className='link-image' />
+          </button>
         </div>
       </div>
     </div>
