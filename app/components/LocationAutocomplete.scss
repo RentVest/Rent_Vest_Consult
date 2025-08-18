@@ -1,0 +1,99 @@
+// Import theme variables
+@import '@/app/styles/variables';
+
+.location-autocomplete-container {
+  position: relative;
+  width: 100%;
+}
+
+.location-autocomplete {
+  position: relative;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid $border-primary;
+  border-radius: 8px;
+  font-size: 16px;
+  color: $text-primary;
+  background: white;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $theme-secondary;
+    box-shadow: 0 0 0 3px rgba(0, 114, 244, 0.1);
+  }
+
+  &::placeholder {
+    color: $text-gray;
+    opacity: 0.8;
+  }
+
+  &.error {
+    border-color: $alert;
+
+    &:focus {
+      border-color: $alert;
+      box-shadow: 0 0 0 3px rgba(241, 73, 61, 0.1);
+    }
+  }
+}
+
+// Google Maps Autocomplete - styling to match the original Location.tsx
+.pac-container {
+
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #fff !important;
+  border: 1px solid #ddd !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  z-index: 9999 !important;
+  font-family: inherit !important;
+  margin-top: 5px !important;
+  border-top: none !important;
+}
+
+// Each suggestion item in the dropdown
+.pac-item {
+  padding: 6px 15px !important;
+  color: #505050 !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+// Hover effect for each item
+.pac-item:hover {
+  background-color: #f8f8f8 !important;
+}
+
+// Highlight color for the matching part of the input
+.pac-item-query {
+  font-weight: bold !important;
+  color: #1a73e8 !important;
+  font-size: 14px !important;
+}
+
+.pac-matched {
+  font-weight: bold !important;
+  color: #1a73e8 !important;
+}
+
+// Remove default icon styling
+.pac-icon {
+  width: 16px !important;
+  height: 16px !important;
+  margin-right: 8px !important;
+}
+
+// Clean styling for selected items
+.pac-item-selected {
+  background-color: #f8f8f8 !important;
+}
+
+.pac-item-query .pac-matched {
+  color: #1a73e8 !important;
+}

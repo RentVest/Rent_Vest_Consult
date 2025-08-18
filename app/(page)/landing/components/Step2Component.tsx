@@ -8,6 +8,9 @@ import { FormData, TenantPreferences, LandlordDetails } from '@/app/types/form';
 
 // Components
 import WidgetLoader from '@/app/reusable/WidgetLoader';
+import RequirementsDropdown from './RequirementsDropdown';
+import { APIProvider } from '@vis.gl/react-google-maps';
+import { AddressAutocomplete } from '@/app/components/LocationAutocomplete';
 
 // Styles
 import './Step2Component.scss';
@@ -87,15 +90,14 @@ const Step2Component: React.FC<Step2Props> = ({
         {/* Location preference */}
         <div className='form-group'>
           <label htmlFor='location'>What city/neighborhood are you looking in?</label>
-          <input
-            type='text'
-            id='location'
-            value={formData.tenantPreferences?.location || ''}
-            onChange={(e) => updateTenantField('location', e.target.value)}
-            placeholder='Enter city or neighborhood'
-            className={validationErrors.location ? 'error' : ''}
-          />
-          {validationErrors.location && <div className='error-message'>{validationErrors.location}</div>}
+          <APIProvider apiKey={process.env.NEXT_PUBLIC_APP_GOOGLE_MAPS_API_KEY || ''}>
+            <AddressAutocomplete
+              value={formData.tenantPreferences?.location || ''}
+              onChange={(value) => updateTenantField('location', value)}
+              className={validationErrors.location ? 'error' : ''}
+            />
+            {validationErrors.location && <div className='error-message'>{validationErrors.location}</div>}
+          </APIProvider>
         </div>
 
         {/* Move-in timeline */}
@@ -188,15 +190,18 @@ const Step2Component: React.FC<Step2Props> = ({
 
         {/* Error display */}
         {submissionError && (
-          <div className='error-message' style={{ 
-            color: '#e74c3c', 
-            backgroundColor: '#fdf2f2', 
-            border: '1px solid #f5c6cb', 
-            borderRadius: '4px', 
-            padding: '12px', 
-            marginBottom: '16px',
-            fontSize: '14px'
-          }}>
+          <div
+            className='error-message'
+            style={{
+              color: '#e74c3c',
+              backgroundColor: '#fdf2f2',
+              border: '1px solid #f5c6cb',
+              borderRadius: '4px',
+              padding: '12px',
+              marginBottom: '16px',
+              fontSize: '14px',
+            }}
+          >
             <strong>Submission failed:</strong> {submissionError}
           </div>
         )}
@@ -291,13 +296,13 @@ const Step2Component: React.FC<Step2Props> = ({
         {/* Tenant requirements */}
         <div className='form-group'>
           <label htmlFor='requirements'>Do you require tenants to have a certain credit score or income threshold?</label>
-          <input
-            type='text'
-            id='requirements'
+          <RequirementsDropdown
             value={formData.landlordDetails?.requirements || ''}
-            onChange={(e) => updateLandlordField('requirements', e.target.value)}
-            placeholder='e.g., 650+ credit score, 3x income'
+            onChange={(value) => updateLandlordField('requirements', value)}
+            placeholder='Select requirement'
+            className={validationErrors.requirements ? 'error' : ''}
           />
+          {validationErrors.requirements && <div className='error-message'>{validationErrors.requirements}</div>}
         </div>
 
         {/* Lease length options */}
@@ -363,15 +368,18 @@ const Step2Component: React.FC<Step2Props> = ({
 
         {/* Error display */}
         {submissionError && (
-          <div className='error-message' style={{ 
-            color: '#e74c3c', 
-            backgroundColor: '#fdf2f2', 
-            border: '1px solid #f5c6cb', 
-            borderRadius: '4px', 
-            padding: '12px', 
-            marginBottom: '16px',
-            fontSize: '14px'
-          }}>
+          <div
+            className='error-message'
+            style={{
+              color: '#e74c3c',
+              backgroundColor: '#fdf2f2',
+              border: '1px solid #f5c6cb',
+              borderRadius: '4px',
+              padding: '12px',
+              marginBottom: '16px',
+              fontSize: '14px',
+            }}
+          >
             <strong>Submission failed:</strong> {submissionError}
           </div>
         )}
