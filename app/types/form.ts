@@ -23,11 +23,31 @@ export interface LandlordDetails {
   concerns: string;
 }
 
+export interface AdminComment {
+  admin_name: string;
+  comment: string;
+  status: string;
+  timestamp: string;
+}
+
 export interface FormData {
+  _id?: string;
   name: string;
   email: string;
   phoneNumber: string;
   userType: string;
   tenantPreferences?: TenantPreferences;
   landlordDetails?: LandlordDetails;
+  created_at?: string;
+  updated_at?: string;
+  admin_status?: string;
+  admin_comments?: AdminComment[];
+  admin_updated_at?: string;
+}
+
+export interface AdminUpdateData {
+  submission_id: string;
+  admin_name: string;
+  admin_status: string;
+  admin_comment?: string;
 }

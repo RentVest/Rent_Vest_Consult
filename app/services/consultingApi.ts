@@ -1,4 +1,4 @@
-import { FormData } from '@/app/types/form';
+import { FormData, AdminUpdateData } from '@/app/types/form';
 
 // API configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
@@ -112,6 +112,43 @@ class ConsultingApiService {
       };
     } catch (error) {
       console.error('API retrieval error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Network error occurred',
+      };
+    }
+  }
+
+  /**
+   * Update admin status and comments for a submission
+   */
+  async updateAdminStatus(adminData: AdminUpdateData): Promise<ApiResponse<{message: string; submission_id: string}>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/update-admin-status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(adminData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          error: result.error || `HTTP ${response.status}: ${response.statusText}`,
+        };
+      }
+
+      return {
+        success: true,
+        data: result,
+        message: result.message,
+      };
+    } catch (error) {
+      console.error('API admin update error:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Network error occurred',

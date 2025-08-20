@@ -5,7 +5,7 @@ import { consultingApi, validateApiResponse } from '@/app/services/consultingApi
 import { FormData } from '@/app/types/form';
 import { AuthProvider, useAuth } from '@/app/auth/AuthContext';
 import LoginForm from '@/app/auth/LoginForm';
-import ConsultingDataCard from './components/ConsultingDataCard';
+import ConsultingDataTable from './components/ConsultingDataTable';
 import FilterPanel from './components/FilterPanel';
 import LoadingSpinner from './components/LoadingSpinner';
 import './dashboard.scss';
@@ -101,6 +101,10 @@ const DashboardContent: React.FC = () => {
     <div className='dashboard-container'>
       <div className='dashboard-header'>
         <h1>Consulting Data Dashboard</h1>
+        <p>
+          Manage and track all consulting submissions from tenants and landlords. View details, update status, and add comments to streamline your
+          workflow.
+        </p>
         <div className='header-actions'>
           <button onClick={handleRefresh} className='btn-secondary' disabled={isLoading}>
             {isLoading ? 'Refreshing...' : 'Refresh'}
@@ -108,8 +112,8 @@ const DashboardContent: React.FC = () => {
           <button onClick={logout} className='btn-secondary'>
             Logout
           </button>
-          <a href='/' className='btn-primary'>
-            Back to Form
+          <a href='/' className='back-btn-primary'>
+            Back to Home
           </a>
         </div>
       </div>
@@ -141,11 +145,7 @@ const DashboardContent: React.FC = () => {
         ) : (
           <>
             {filteredData.length > 0 ? (
-              <div className='submissions-list'>
-                {filteredData.map((item, index) => (
-                  <ConsultingDataCard key={`${item.email}-${index}`} data={item} />
-                ))}
-              </div>
+              <ConsultingDataTable data={filteredData} onUpdate={() => fetchConsultingData(pagination.offset)} />
             ) : (
               <div className='empty-state'>
                 <h3>No submissions found</h3>
