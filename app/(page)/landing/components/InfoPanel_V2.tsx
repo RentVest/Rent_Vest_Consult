@@ -1,11 +1,13 @@
 'use client';
 
 // React and Next.js imports
-import React from 'react';
+import React, {useState } from 'react';
 import Image from 'next/image';
+import SupportModal from './SupportModal';
 
 // Assets
 import linkWhite from '@/public/link-white.svg';
+import questionMark from '@/public/question-mark.svg';
 
 import check from '@/public/check.svg';
 
@@ -14,6 +16,8 @@ import './InfoPanel-v2.scss';
 
 // Information panel component - displays consultation details and partner information
 const InfoPanel: React.FC = () => {
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
+
   return (
     <div className='info-panel'>
       <div className='info-content'>
@@ -50,8 +54,16 @@ const InfoPanel: React.FC = () => {
             About us
             <Image src={linkWhite} alt='Link' className='link-image' />
           </button>
+
+          <button type='button' className='cta-button' onClick={() => setIsSupportModalOpen(true)}>
+            Support
+            <Image src={questionMark} alt='Question Mark' className='question-mark' />
+          </button>
         </div>
       </div>
+
+      {/* Support modal */} 
+      <SupportModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />
     </div>
   );
 };
