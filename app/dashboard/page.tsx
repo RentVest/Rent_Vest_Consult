@@ -305,7 +305,13 @@ const DashboardContent: React.FC = () => {
             ) : (
               <div className='empty-state'>
                 <h3>No tickets found</h3>
-                <p>{filters.searchTerm || filters.userType !== 'all' ? 'Try adjusting your filters' : 'No tickets found for this status'}</p>
+                <p>
+                  {supportPagination.total === 0
+                    ? 'No support tickets have been submitted yet.'
+                    : (filters.supportStatus !== 'All' || !!filters.searchTerm)
+                      ? 'No tickets match the current status.'
+                      : 'No tickets found.'}
+                </p>
               </div>
             )}
           </>
