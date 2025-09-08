@@ -34,8 +34,16 @@
 
     .header-actions {
       display: flex;
-      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
       margin-top: 20px;
+
+      .header-actions-left,
+      .header-actions-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
       .btn-secondary,
       .btn-primary {
@@ -48,6 +56,11 @@
         &:disabled {
           opacity: 0.5;
           cursor: not-allowed;
+        }
+        &.active {
+          background-color: $theme-primary;
+          color: white;
+
         }
       }
 
@@ -179,6 +192,7 @@
       .header-actions {
         width: 100%;
         justify-content: center;
+        gap: 12px;
       }
     }
 
@@ -198,7 +212,7 @@
   }
 }
 
-.back-btn-primary {
-  @include button-primary;
-  padding: 0 20px;
-}
+//.back-btn-primary {
+  //@include button-primary;
+ // padding: 0 20px;
+//}
