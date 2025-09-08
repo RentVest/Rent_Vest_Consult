@@ -3,10 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { consultingApi, validateApiResponse } from '@/app/services/consultingApi';
 import { FormData } from '@/app/types/form';
+import { SupportTicketData } from '@/app/types/support';
 import { AuthProvider, useAuth } from '@/app/auth/AuthContext';
 import LoginForm from '@/app/auth/LoginForm';
 import ConsultingDataTable from './components/ConsultingDataTable';
+import SupportTicketTable from './components/SupportTicketTable';
 import FilterPanel from './components/FilterPanel';
+import SupportFilterPanel from './components/SupportFilterPanel';
 import LoadingSpinner from './components/LoadingSpinner';
 import './dashboard.scss';
 
@@ -30,11 +33,22 @@ const DashboardContent: React.FC = () => {
     has_more: false,
   });
 
+  const [supportData, setSupportData] = useState<SupportTicketData[]>([]);
+  const [supportPagination, setSupportPagination] = useState<PaginationInfo>({
+    total: 0,
+    limit: 10,
+    offset: 0,
+    has_more: false,
+  });
+
+  const [activeTab, setActiveTab] = useState<'consulting' | 'support'>('consulting');
+
   // Filter state
   const [filters, setFilters] = useState({
     userType: 'all' as 'all' | 'tenant' | 'landlord',
     limit: 10,
     searchTerm: '',
+    supportStatus: 'All' as 'All' | 'New' | 'In Progress' | 'Resolved' | 'Closed',
   });
 
   // Fetch data function
@@ -63,6 +77,37 @@ const DashboardContent: React.FC = () => {
       setIsLoading(false);
     }
   };
+  // Fetch support data function
+  const fetchSupportData = async (offset: number = 0) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const options = {
+        limit: filters.limit,
+        offset: offset,
+        ...(filters.userType !== 'all' && { userType: filters.userType }),
+      };
+
+      const response = await consultingApi.getAllSupportTickets(options);
+      console.log('response', response);
+    if (validateApiResponse(response)) {
+      setSupportData(response.data.data);
+      setSupportPagination(response.data.pagination);
+    } else {
+      setError(response.error || 'Failed to fetch data');
+    }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Initial data load
+  useEffect(() => {
+    fetchSupportData();
+  }, [filters.limit]);
 
   // Initial data load
   useEffect(() => {
@@ -80,6 +125,27 @@ const DashboardContent: React.FC = () => {
       item.tenantPreferences?.location?.toLowerCase().includes(searchLower) ||
       item.landlordDetails?.propertyType?.toLowerCase().includes(searchLower)
     );
+  });
+
+  // Support: filter by search and status (client-side)
+  const filteredSupportData = supportData.filter((item) => {
+    const matchesSearch = (() => {
+      if (!filters.searchTerm) return true;
+      const searchLower = filters.searchTerm.toLowerCase();
+      return (
+        item.name?.toLowerCase().includes(searchLower) ||
+        item.email?.toLowerCase().includes(searchLower) ||
+        item.message?.toLowerCase().includes(searchLower)
+      );
+    })();
+
+    const matchesStatus = (() => {
+      if (filters.supportStatus === 'All') return true;
+      const status = (item.admin_status || 'New').toLowerCase();
+      return status === filters.supportStatus.toLowerCase();
+    })();
+
+    return matchesSearch && matchesStatus;
   });
 
   // Handle filter changes
@@ -100,25 +166,47 @@ const DashboardContent: React.FC = () => {
   return (
     <div className='dashboard-container'>
       <div className='dashboard-header'>
-        <h1>Consulting Data Dashboard</h1>
+        <h1>{activeTab === 'consulting' ? 'Consulting Data Dashboard' : 'Support Ticket Dashboard'}</h1>
         <p>
-          Manage and track all consulting submissions from tenants and landlords. View details, update status, and add comments to streamline your
-          workflow.
+          {activeTab === 'consulting' 
+            ? 'Manage and track all consulting submissions from tenants and landlords. View details, update status, and add comments to streamline your workflow.' 
+            : 'Manage and track all support tickets from users. View details, update status, and add comments to streamline your workflow.'}
         </p>
+
+        {/* Header Section including all buttons */}
         <div className='header-actions'>
-          <button onClick={handleRefresh} className='btn-secondary' disabled={isLoading}>
-            {isLoading ? 'Refreshing...' : 'Refresh'}
-          </button>
-          <button onClick={logout} className='btn-secondary'>
-            Logout
-          </button>
-          <a href='/' className='back-btn-primary'>
-            Back to Home
-          </a>
+          <div className='header-actions-left'>
+            <button 
+              onClick={() => setActiveTab('consulting')} 
+              className={`btn-secondary ${activeTab === 'consulting' ? 'active' : ''}`}
+            >
+              Consulting
+            </button>
+            <button 
+              onClick={() => setActiveTab('support')} 
+              className={`btn-secondary ${activeTab === 'support' ? 'active' : ''}`}
+            >
+              Support
+            </button>
+          </div>
+
+          <div className='header-actions-right'>
+            <button onClick={handleRefresh} className='btn-secondary' disabled={isLoading}>
+              {isLoading ? 'Refreshing...' : 'Refresh'}
+            </button>
+            <button onClick={logout} className='btn-secondary'>
+              Logout
+            </button>
+            <a href='/' className='btn-secondary'>
+              Back to Home
+            </a>
+          </div>
         </div>
       </div>
 
       <div className='dashboard-content'>
+      {activeTab === 'consulting' && (
+        <>
         <div className='content-header'>
           <div className='stats'>
             <span className='total-count'>{pagination.total} total submissions</span>
@@ -179,6 +267,68 @@ const DashboardContent: React.FC = () => {
             )}
           </>
         )}
+        </>
+      )}
+
+      {activeTab === 'support' && (
+        <>
+        <div className='content-header'>
+          <div className='stats'>
+            <span className='total-count'>{supportPagination.total} total tickets</span>
+            {filters.supportStatus !== 'All' || filters.searchTerm ? (
+              <span className='filter-count'>
+                ({filteredSupportData.length} matching)
+              </span>
+            ) : null}
+          </div>
+          <SupportFilterPanel filters={{ supportStatus: filters.supportStatus, limit: filters.limit, searchTerm: filters.searchTerm }} onFilterChange={(f) => handleFilterChange(f as any)} />
+        </div>
+
+        {error && (
+          <div className='error-message'>
+            {error}
+            <button onClick={handleRefresh} className='retry-btn'>
+              Retry
+            </button>
+          </div>
+        )}
+
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            {filteredSupportData.length > 0 ? (
+              <SupportTicketTable
+                data={filteredSupportData}
+                onUpdate={() => fetchSupportData(supportPagination.offset)}
+              />
+            ) : (
+              <div className='empty-state'>
+                <h3>No tickets found</h3>
+                <p>{filters.searchTerm || filters.userType !== 'all' ? 'Try adjusting your filters' : 'No tickets found for this status'}</p>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Pagination */}
+        {!filters.searchTerm && supportPagination.total > supportPagination.limit && (
+          <div className='pagination'>
+            <span className='page-info'>
+              {supportPagination.offset + 1}-{Math.min(supportPagination.offset + supportPagination.limit, supportPagination.total)} of {supportPagination.total}
+            </span>
+            <div className='page-controls'>
+              <button className='page-btn' onClick={() => fetchSupportData(supportPagination.offset - supportPagination.limit)} disabled={supportPagination.offset === 0 || isLoading}>
+                ←
+                </button>
+              <button className='page-btn' onClick={() => fetchSupportData(supportPagination.offset + supportPagination.limit)} disabled={!supportPagination.has_more || isLoading}>
+                →
+              </button>
+            </div>
+          </div>
+        )}
+        </>
+      )}
       </div>
     </div>
   );
