@@ -26,6 +26,28 @@ export interface ConsultingDataResponse {
   };
 }
 
+export interface SupportFormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+export interface SupportTicketResponse {
+  data: SupportFormData[];
+  pagination: {
+    total: number;
+    limit: number;
+    offset: number;
+    has_more: boolean;
+  };
+}
+
+export interface SupportTicketData {
+  ticket_id: string;
+  admin_name: string;
+  admin_status: string;
+}
+
 // API service class
 class ConsultingApiService {
   private baseUrl: string;
@@ -155,6 +177,126 @@ class ConsultingApiService {
       };
     }
   }
+
+  /**
+   * Submit support ticket to the API
+   */
+  async submitSupportTicket(supportFormData: SupportFormData): Promise<ApiResponse<SubmitResponse>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/submit-support-tickets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(supportFormData),
+      });
+    
+      const result = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          error: result.error || `HTTP ${response.status}: ${response.statusText}`,
+        };
+      }
+
+      return {
+        success: true,
+        data: result,
+        message: result.message,
+      };
+    } catch (error) {
+      console.error('API support submission error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Network error occurred',
+      };
+    }
+  }
+
+  /**
+   * Retrieve all support tickets
+   */
+  async getAllSupportTickets(
+    options: {
+      limit?: number;
+      offset?: number;
+    } = {}
+  ): Promise<ApiResponse<SupportTicketResponse>> {
+    try {
+      const params = new URLSearchParams();
+      if (options.limit) params.append('limit', options.limit.toString());
+      if (options.offset) params.append('offset', options.offset.toString());
+
+      const url = `${this.baseUrl}/get-all-support-tickets${params.toString() ? '?' + params.toString() : ''}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          error: result.error || `HTTP ${response.status}: ${response.statusText}`,
+        };
+      }
+
+      return {
+        success: true,
+        data: result,
+      };
+    } catch (error) {
+      console.error('API support ticket retrieval error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Network error occurred',
+      };
+    }
+  }
+
+  /**
+   * Update admin status for a support ticket
+   */
+  async updateSupportAdminStatus(supportTicketData: SupportTicketData): Promise<ApiResponse<{message: string; submission_id: string}>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/update-support-admin-status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(supportTicketData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          error: result.error || `HTTP ${response.status}: ${response.statusText}`,
+        };
+      }
+
+      return {
+        success: true,
+        data: result,
+        message: result.message,
+      };
+    } catch (error) {
+      console.error('API support admin status update error:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Network error occurred',
+      };
+    };
+  }
+  
 
   /**
    * Test API connectivity
