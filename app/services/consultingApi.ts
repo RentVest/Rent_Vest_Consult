@@ -1,7 +1,8 @@
 import { FormData, AdminUpdateData } from '@/app/types/form';
 
 // API configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || ''
+const NEXT_PUBLIC_CONSULT_API_URL = process.env.NEXT_PUBLIC_CONSULT_API_URL || ''
+const NEXT_PUBLIC_SUPPORT_API_URL = process.env.NEXT_PUBLIC_SUPPORT_API_URL || ''
 
 // Response types
 export interface ApiResponse<T = any> {
@@ -50,10 +51,12 @@ export interface SupportTicketData {
 
 // API service class
 class ConsultingApiService {
-  private baseUrl: string;
+  private consultBaseUrl: string;
+  private supportBaseUrl: string;
 
-  constructor(baseUrl: string = API_BASE_URL) {
-    this.baseUrl = baseUrl;
+  constructor(consultBaseUrl: string = NEXT_PUBLIC_CONSULT_API_URL, supportBaseUrl: string = NEXT_PUBLIC_SUPPORT_API_URL) {
+    this.consultBaseUrl = consultBaseUrl;
+    this.supportBaseUrl = supportBaseUrl;
   }
 
   /**
@@ -61,7 +64,7 @@ class ConsultingApiService {
    */
   async submitConsultingData(formData: FormData): Promise<ApiResponse<SubmitResponse>> {
     try {
-      const response = await fetch(`${this.baseUrl}/submit-consulting-data`, {
+      const response = await fetch(`${this.consultBaseUrl}/submit-consulting-data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +113,7 @@ class ConsultingApiService {
       if (options.offset) params.append('offset', options.offset.toString());
       if (options.userType) params.append('userType', options.userType);
 
-      const url = `${this.baseUrl}/get-all-consulting-data${params.toString() ? '?' + params.toString() : ''}`;
+      const url = `${this.consultBaseUrl}/get-all-consulting-data${params.toString() ? '?' + params.toString() : ''}`;
       
       const response = await fetch(url, {
         method: 'GET',
@@ -146,7 +149,7 @@ class ConsultingApiService {
    */
   async updateAdminStatus(adminData: AdminUpdateData): Promise<ApiResponse<{message: string; submission_id: string}>> {
     try {
-      const response = await fetch(`${this.baseUrl}/update-admin-status`, {
+      const response = await fetch(`${this.consultBaseUrl}/update-admin-status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +186,7 @@ class ConsultingApiService {
    */
   async submitSupportTicket(supportFormData: SupportFormData): Promise<ApiResponse<SubmitResponse>> {
     try {
-      const response = await fetch(`${this.baseUrl}/submit-support-tickets`, {
+      const response = await fetch(`${this.supportBaseUrl}/submit-support-tickets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -229,7 +232,7 @@ class ConsultingApiService {
       if (options.limit) params.append('limit', options.limit.toString());
       if (options.offset) params.append('offset', options.offset.toString());
 
-      const url = `${this.baseUrl}/get-all-support-tickets${params.toString() ? '?' + params.toString() : ''}`;
+      const url = `${this.supportBaseUrl}/get-all-support-tickets${params.toString() ? '?' + params.toString() : ''}`;
 
       const response = await fetch(url, {
         method: 'GET',
@@ -265,7 +268,7 @@ class ConsultingApiService {
    */
   async updateSupportAdminStatus(supportTicketData: SupportTicketData): Promise<ApiResponse<{message: string; submission_id: string}>> {
     try {
-      const response = await fetch(`${this.baseUrl}/update-support-admin-status`, {
+      const response = await fetch(`${this.supportBaseUrl}/update-support-admin-status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -303,7 +306,7 @@ class ConsultingApiService {
    */
   async testConnection(): Promise<ApiResponse<string>> {
     try {
-      const response = await fetch(`${this.baseUrl}/`, {
+      const response = await fetch(`${this.consultBaseUrl}/`, {
         method: 'GET',
         headers: {
           'Accept': 'text/plain',
