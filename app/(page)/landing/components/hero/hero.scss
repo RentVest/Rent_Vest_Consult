@@ -1,4 +1,4 @@
-.info-panel {
+.hero-info {
     padding: 100px 0;
     display: flex;
     justify-content: flex-end;
@@ -354,6 +354,18 @@
     gap: 10px;
     font-weight: 500;
 
+    &.--outline {
+        color: $theme-primary;
+        background: transparent;
+        border: 1px solid #1a1a1a;
+
+    }
+
+    & img {
+        width: 14px;
+        height: 14px;
+    }
+
     // Large screens optimization - Enhanced for 1600-2700px range
     @media (min-width: 1600px) {
         padding: 14px 28px;
@@ -387,67 +399,5 @@
         opacity: 0.8;
     }
 
-    .link-image {
-        width: 14px;
-        height: 14px;
 
-        // Large screens optimization - Enhanced for 1600-2700px range
-        @media (min-width: 1600px) {
-            width: 16px;
-            height: 16px;
-        }
-
-        @media (min-width: 1800px) {
-            width: 18px;
-            height: 18px;
-        }
-
-        @media (min-width: 2100px) {
-            width: 20px;
-            height: 20px;
-        }
-
-        @media (min-width: 2400px) {
-            width: 26px;
-            height: 26px;
-        }
-    }
-
-    .question-mark {
-        width: 18px;
-        height: 18px;
-
-        // Large screens optimization - Enhanced for 1600-2700px range
-        @media (min-width: 1600px) {
-            width: 20px;
-            height: 20px;
-        }
-
-        @media (min-width: 1800px) {
-            width: 22px;
-            height: 22px;
-        }
-
-        @media (min-width: 2100px) {
-            width: 24px;
-            height: 24px;
-        }
-
-        @media (min-width: 2400px) {
-            width: 30px;
-            height: 30px;
-        }
-
-    }
-
-    &.--outline {
-        color: $theme-primary;
-        background: transparent;
-        border: 1px solid #d1d5db;
-
-        &:hover {
-            opacity: 0.8;
-            border: 1px solid #9ca3af;
-        }
-    }
 }

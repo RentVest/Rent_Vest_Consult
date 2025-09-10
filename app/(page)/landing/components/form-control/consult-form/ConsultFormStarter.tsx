@@ -11,7 +11,7 @@ import { FormData } from '@/app/types/form';
 import logo from '@/public/logo-full.png';
 
 // Styles
-import './Step1Component.scss';
+import './consult-form.scss';
 
 // Interface for Step1 component props
 interface Step1Props {
@@ -22,10 +22,11 @@ interface Step1Props {
   formatPhoneForDisplay: (value: string) => string;
   isStep1Complete: () => boolean;
   onContinue: () => void;
+  onSupportClick: () => void;
 }
 
 // Step 1 component - collects basic user information and user type
-const Step1Component: React.FC<Step1Props> = ({
+const ConsultFormStarter: React.FC<Step1Props> = ({
   formData,
   validationErrors,
   updateFormField,
@@ -33,6 +34,7 @@ const Step1Component: React.FC<Step1Props> = ({
   formatPhoneForDisplay,
   isStep1Complete,
   onContinue,
+  onSupportClick,
 }) => {
   return (
     <div className='form-section'>
@@ -115,8 +117,12 @@ const Step1Component: React.FC<Step1Props> = ({
       <button className='btn-primary --continue' disabled={!isStep1Complete()} onClick={onContinue} type='button'>
         Continue
       </button>
+
+      <p className='support-link' onClick={onSupportClick}>
+        Need support?
+      </p>
     </div>
   );
 };
 
-export default Step1Component;
+export default ConsultFormStarter;

@@ -9,12 +9,7 @@ interface RequirementsDropdownProps {
   placeholder?: string;
 }
 
-const RequirementsDropdown: React.FC<RequirementsDropdownProps> = ({
-  value,
-  onChange,
-  className = '',
-  placeholder = 'Select requirement'
-}) => {
+const RequirementsDropdown: React.FC<RequirementsDropdownProps> = ({ value, onChange, className = '', placeholder = 'Select requirement' }) => {
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customValue, setCustomValue] = useState('');
 
@@ -26,13 +21,13 @@ const RequirementsDropdown: React.FC<RequirementsDropdownProps> = ({
     { value: '2.5x (income)', label: '2.5x (income)' },
     { value: '4x (income)', label: '4x (income)' },
     { value: 'No credit score required, but proof of credit history', label: 'No credit score required, but proof of credit history' },
-    { value: 'other', label: 'Other (specify)' }
+    { value: 'other', label: 'Other (specify)' },
   ];
 
   const handleSelectChange = (selectedValue: string) => {
     if (selectedValue === 'other') {
       setShowCustomInput(true);
-      setCustomValue(value && !predefinedOptions.some(opt => opt.value === value) ? value : '');
+      setCustomValue(value && !predefinedOptions.some((opt) => opt.value === value) ? value : '');
     } else {
       setShowCustomInput(false);
       setCustomValue('');
@@ -46,10 +41,10 @@ const RequirementsDropdown: React.FC<RequirementsDropdownProps> = ({
   };
 
   // Check if current value is a predefined option
-  const currentValue = predefinedOptions.some(opt => opt.value === value) ? value : 'other';
+  const currentValue = predefinedOptions.some((opt) => opt.value === value) ? value : 'other';
 
   React.useEffect(() => {
-    if (value && !predefinedOptions.some(opt => opt.value === value)) {
+    if (value && !predefinedOptions.some((opt) => opt.value === value)) {
       setShowCustomInput(true);
       setCustomValue(value);
     }
@@ -57,11 +52,7 @@ const RequirementsDropdown: React.FC<RequirementsDropdownProps> = ({
 
   return (
     <div>
-      <select
-        value={currentValue}
-        onChange={(e) => handleSelectChange(e.target.value)}
-        className={className}
-      >
+      <select value={currentValue} onChange={(e) => handleSelectChange(e.target.value)} className={className}>
         <option value=''>{placeholder}</option>
         {predefinedOptions.map((option) => (
           <option key={option.value} value={option.value}>
@@ -69,7 +60,7 @@ const RequirementsDropdown: React.FC<RequirementsDropdownProps> = ({
           </option>
         ))}
       </select>
-      
+
       {showCustomInput && (
         <input
           type='text'

@@ -5,17 +5,14 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-//utilities
+// Utilities
 import { consultingApi } from '@/app/services/consultingApi';
 
 // Components
 import WidgetLoader from '@/app/reusable/WidgetLoader';
+
 // Assets
-import logo from '@/public/logo-full.png';
-import close from '@/public/close.svg';
-import Check from '../../../../public/check.svg';
-// Styles
-import './SupportModal.scss';
+import Check from '@/public/check.svg';
 
 // Interface for Support Ticket data structure
 interface SupportTicketData {
@@ -24,14 +21,52 @@ interface SupportTicketData {
   message: string;
 }
 
-// Props interface for Support Ticket component
-interface SupportTicketProps {
-  isOpen: boolean;
-  onClose: () => void;
+// Interface for SupportForm component props
+interface SupportFormProps {
+  onBackToForm: () => void;
 }
 
-// Modal form component for users to submit support requests
-const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
+// Support form success screen component
+const SupportFormSuccess: React.FC<{
+  onBackToForm: () => void;
+  lastTicketId: string | null;
+  onReset: () => void;
+}> = ({ onBackToForm, lastTicketId, onReset }) => {
+  const handleOK = () => {
+    onReset();
+    onBackToForm();
+  };
+
+  return (
+    <div className='form-panel'>
+      <div className='form-container'>
+        <motion.div key='support-success'>
+          <div className='form-section success-section'>
+            <div className='success-icon'>
+              <Image src={Check} alt='Check' />
+            </div>
+            <h2 className='success-title'>Thank You!</h2>
+            <p className='success-message'>Your support ticket has been submitted successfully.</p>
+            {lastTicketId ? (
+              <p className='success-message'>
+                Ticket ID: <strong>#{lastTicketId}</strong>
+              </p>
+            ) : null}
+            <div className='success-confirmation'>
+              <p className='confirmation-followup'>Our team will review your ticket and get back to you shortly!</p>
+            </div>
+            <button className='btn-primary --close' onClick={handleOK} style={{ marginTop: '20px' }}>
+              OK
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+// Support form component
+const SupportForm: React.FC<SupportFormProps> = ({ onBackToForm }) => {
   // State for form data - stores user input values
   const [supportFormData, setSupportFormData] = useState<SupportTicketData>({
     name: '',
@@ -48,15 +83,11 @@ const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
   const updateSupportFormField = (field: keyof SupportTicketData, value: string) => {
     setSupportFormData({ ...supportFormData, [field]: value });
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
   };
 
-  const isFormComplete = () => Boolean(
-    supportFormData.name.trim() &&
-    supportFormData.email.trim() &&
-    supportFormData.message.trim()
-  );
+  const isFormComplete = () => Boolean(supportFormData.name.trim() && supportFormData.email.trim() && supportFormData.message.trim());
 
   /**
    * Validates the form data and sets validation errors
@@ -68,13 +99,13 @@ const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
     if (!supportFormData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
+
     if (!supportFormData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(supportFormData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     if (!supportFormData.message.trim()) {
       newErrors.message = 'Message is required';
     }
@@ -82,7 +113,7 @@ const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
-  }
+  };
 
   // Handle form submission with loading state
   const handleSubmit = async (e: React.FormEvent) => {
@@ -110,69 +141,38 @@ const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  if (!isOpen) return null;
+  const resetForm = () => {
+    setIsSubmitted(false);
+    setSupportFormData({
+      name: '',
+      email: '',
+      message: '',
+    });
+    setErrors({});
+    setLastTicketId(null);
+  };
+
+  if (isSubmitted) {
+    return <SupportFormSuccess onBackToForm={onBackToForm} lastTicketId={lastTicketId} onReset={resetForm} />;
+  }
 
   return (
-    <div className='modal-overlay'
-      //onClick={onClose}
-    >
-      <div className='modal-content'
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Submission success message */}
-        {isSubmitted ? (
-          <div className='modal-success'>
-            <motion.div key='success'>
-            <div className='form-section success-section'>
-              <div className='success-icon'>
-                <Image src={Check} alt='Check' />
-              </div>
-              <h2 className='success-title'>Thank You!</h2>
-              <p className='success-message'>Your support ticket has been submitted successfully.</p>
-              {lastTicketId ? (
-                <p className='success-message'>Ticket ID: <strong>#{lastTicketId}</strong></p>
-              ) : null}
-              <div className='success-confirmation'>
-                {/*<p className='confirmation-email'>📧 Please check your email for confirmation</p>*/}
-                <p className='confirmation-followup'>Our team will review your ticket and get back to you shortly!</p>
-              </div>
-            </div>
-          </motion.div>
-            <button 
-              className='btn-primary --close' 
-              onClick={() => {
-                setIsSubmitted(false);
-                setSupportFormData({
-                  name: '',
-                  email: '',
-                  message: '',
-                });
-                onClose();
-              }} 
-              >OK</button>
-          </div>
-        ) : (
-          <>
-            {/* Form header with logo and title */}
-            <div className='modal-header'>
-              <Image src={logo} alt='Logo' className='logo' />
-              <h4>How can we help you?</h4>
-              <button 
-                className='close-button' 
-                onClick={onClose} 
-                type='button'
-              >
-                <Image src={close} width={16} height={16} alt='Close' className='close-icon' />
-              </button>
+    <div className='form-panel'>
+      <div className='form-container'>
+        <motion.div key='support-form'>
+          <div className='form-section'>
+            {/* Form header with back button */}
+            <div className='go-back-to-form' onClick={onBackToForm}>
+              ← Back
             </div>
 
             <form onSubmit={handleSubmit}>
               {/* Full name input field */}
               <div className='form-group'>
-                <label htmlFor='name'>Full Name</label>
+                <label htmlFor='support-name'>Full Name</label>
                 <input
                   type='text'
-                  id='name'
+                  id='support-name'
                   value={supportFormData.name}
                   onChange={(e) => updateSupportFormField('name', e.target.value)}
                   placeholder='Enter your full name'
@@ -184,10 +184,10 @@ const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
 
               {/* Email address input field */}
               <div className='form-group'>
-                <label htmlFor='email'>Email Address</label>
+                <label htmlFor='support-email'>Email Address</label>
                 <input
                   type='email'
-                  id='email'
+                  id='support-email'
                   value={supportFormData.email}
                   onChange={(e) => updateSupportFormField('email', e.target.value)}
                   placeholder='Enter your email address'
@@ -197,11 +197,11 @@ const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
                 {errors.email && <div className='error-message'>{errors.email}</div>}
               </div>
 
-              {/* Concerns textarea field */}
+              {/* Message textarea field */}
               <div className='form-group'>
-                <label htmlFor='message'>Message</label>
+                <label htmlFor='support-message'>Message</label>
                 <textarea
-                  id='message'
+                  id='support-message'
                   value={supportFormData.message}
                   onChange={(e) => updateSupportFormField('message', e.target.value)}
                   placeholder='Please describe your concerns or questions...'
@@ -212,18 +212,25 @@ const SupportModal: React.FC<SupportTicketProps> = ({ isOpen, onClose }) => {
                 {errors.message && <div className='error-message'>{errors.message}</div>}
               </div>
 
-              {/* Continue button - disabled until form is complete */}
+              {/* Submit button */}
               <div className='form-submit'>
                 <button type='submit' className='btn-primary' onClick={handleSubmit} disabled={isSubmitting || !isFormComplete()}>
                   {isSubmitting ? <WidgetLoader color='light' /> : 'Submit'}
                 </button>
               </div>
+
+              <p className='support-followup'>We will get back to you shortly via email.</p>
             </form>
-          </>
-        )}
+          </div>
+        </motion.div>
       </div>
     </div>
   );
 };
 
-export default SupportModal;
+// Main SupportForm component that handles both form and success states
+const SupportFormContainer: React.FC<SupportFormProps> = ({ onBackToForm }) => {
+  return <SupportForm onBackToForm={onBackToForm} />;
+};
+
+export default SupportFormContainer;

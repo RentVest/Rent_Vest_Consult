@@ -801,3 +801,39 @@
         margin-bottom: 10px;
     }
 }
+
+.support-link {
+    color: $theme-secondary;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 16px;
+    width: fit-content;
+    text-align: center;
+    transition: color 0.2s ease;
+    margin: auto;
+    margin-top: 10px;
+    text-decoration: underline;
+
+
+
+    // Large screens optimization
+    @media (min-width: 1600px) {
+        font-size: 15px;
+        margin-top: 18px;
+    }
+
+    @media (min-width: 1800px) {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    @media (min-width: 2100px) {
+        font-size: 17px;
+        margin-top: 22px;
+    }
+
+    @media (min-width: 2400px) {
+        font-size: 18px;
+        margin-top: 24px;
+    }
+}

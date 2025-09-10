@@ -13,7 +13,7 @@ import { APIProvider } from '@vis.gl/react-google-maps';
 import { AddressAutocomplete } from '@/app/components/LocationAutocomplete';
 
 // Styles
-import './Step2Component.scss';
+import './consult-form.scss';
 
 // Interface for Step2 component props
 interface Step2Props {
@@ -29,7 +29,7 @@ interface Step2Props {
 }
 
 // Step 2 component - collects detailed preferences based on user type (Tenant/Landlord)
-const Step2Component: React.FC<Step2Props> = ({
+const ConsultFormDetail: React.FC<Step2Props> = ({
   formData,
   validationErrors,
   updateTenantField,
@@ -397,4 +397,4 @@ const Step2Component: React.FC<Step2Props> = ({
   return null;
 };
 
-export default Step2Component;
+export default ConsultFormDetail;

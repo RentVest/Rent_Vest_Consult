@@ -7,13 +7,13 @@ import React from 'react';
 import './index.scss';
 
 // Components
-import InfoPanel from '@/app/(page)/landing/components/InfoPanel_V2';
-import FormComponent from '@/app/(page)/landing/components/FormComponent';
+import InfoPanel from '@/app/(page)/landing/components/hero/Hero';
+import FormComponent from '@/app/(page)/landing/components/form-control';
 
 // Main page component - RentVest consultation form
 export default function FormPage() {
   return (
-    <div className='form-page'>
+    <div className='landing-page'>
       <InfoPanel />
       <FormComponent />
     </div>

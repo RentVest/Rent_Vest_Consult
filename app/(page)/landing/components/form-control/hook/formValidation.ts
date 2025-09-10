@@ -1,6 +1,6 @@
 // Validation utilities for RentVest consultation form
 
-import { FormData, TenantPreferences, LandlordDetails } from '../../../types/form';
+import { FormData, TenantPreferences, LandlordDetails } from '@/app/types/form';
 
 export interface ValidationResult {
   isValid: boolean;

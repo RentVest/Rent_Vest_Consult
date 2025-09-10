@@ -6,19 +6,20 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Custom hooks and utilities
-import { useFormState } from '@/app/(page)/landing/components/useFormState';
+import { useFormState } from '@/app/(page)/landing/components/form-control/hook/useFormState';
 import { consultingApi, validateApiResponse, getErrorMessage } from '@/app/services/consultingApi';
 
 // Components
-import Step1Component from './Step1Component';
-import Step2Component from './Step2Component';
+import ConsultFormStarter from './consult-form/ConsultFormStarter';
+import ConsultFormDetail from './consult-form/ConsultFormDetail';
+import SupportFormContainer from './support-form/SupportForm';
 import Confetti from '@/app/reusable/Confetti';
 
 // Assets
-import Check from '../../../../public/check.svg';
+import Check from '@/public/check.svg';
 
 // Styles
-import './FormComponent.scss';
+import './index.scss';
 
 // Main form component - handles multi-step consultation form with animations
 const FormComponent: React.FC = () => {
@@ -62,12 +63,17 @@ const FormComponent: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [submissionError, setSubmissionError] = React.useState<string | null>(null);
 
+  // Support form state
+  const [showSupportForm, setShowSupportForm] = React.useState(false);
+
+  // Support form hook (we only need the hook for the SupportForm component)
+
   // Real API call for form submission
   const submitFormData = async () => {
     console.log('Submitting form data:', formData);
-    
+
     const response = await consultingApi.submitConsultingData(formData);
-    
+
     if (validateApiResponse(response)) {
       console.log('Form submitted successfully:', response.data);
       return { success: true, data: response.data };
@@ -110,7 +116,21 @@ const FormComponent: React.FC = () => {
     goBack();
   };
 
-  // Success screen component
+  // Support form handlers
+  const handleSupportClickWrapper = () => {
+    setShowSupportForm(true);
+  };
+
+  const handleBackToForm = () => {
+    setShowSupportForm(false);
+  };
+
+  // Support form screen
+  if (showSupportForm) {
+    return <SupportFormContainer onBackToForm={handleBackToForm} />;
+  }
+
+  // Main form success screen component
   if (isSubmitted) {
     return (
       <div className='form-panel'>
@@ -151,7 +171,7 @@ const FormComponent: React.FC = () => {
                   exit='exit'
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <Step1Component
+                  <ConsultFormStarter
                     formData={formData}
                     validationErrors={validationErrors}
                     updateFormField={updateFormField}
@@ -159,6 +179,7 @@ const FormComponent: React.FC = () => {
                     formatPhoneForDisplay={formatPhoneForDisplay}
                     isStep1Complete={isStep1Complete}
                     onContinue={handleContinue}
+                    onSupportClick={handleSupportClickWrapper}
                   />
                 </motion.div>
               )}
@@ -173,7 +194,7 @@ const FormComponent: React.FC = () => {
                   exit='exit'
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <Step2Component
+                  <ConsultFormDetail
                     formData={formData}
                     validationErrors={validationErrors}
                     updateTenantField={updateTenantField}

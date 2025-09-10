@@ -6,7 +6,7 @@ import {
   validateFieldRealTime, 
   hasMinimumRequiredDataStep1, 
   hasMinimumRequiredDataStep2 
-} from './formValidation';
+} from '@/app/(page)/landing/components/form-control/hook/formValidation';
 
 export const useFormState = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -182,14 +182,20 @@ export const useFormState = () => {
   // Reset form to go back
   const goBack = () => {
     setCurrentStep(1);
-    // Keep the user type selection when going back
-    setFormData({ 
-      name: formData.name, 
-      email: formData.email, 
-      phoneNumber: formData.phoneNumber, 
-      userType: formData.userType 
-    });
-    setValidationErrors({});
+    // Keep all form data when going back - don't reset tenantPreferences or landlordDetails
+    // Only clear validation errors for Step 2 fields
+    const step2Fields = formData.userType === 'tenant' 
+      ? ['housingType', 'budget', 'location', 'moveInTime', 'rentToOwn', 'leaseLength', 'hasPets', 'profession', 'requirements']
+      : ['propertyType', 'rent', 'availability', 'rentToOwn', 'requirements', 'leaseLength', 'utilitiesIncluded', 'screeningHelp', 'concerns'];
+    
+    const filteredErrors = Object.keys(validationErrors).reduce((acc, key) => {
+      if (!step2Fields.includes(key)) {
+        acc[key] = validationErrors[key];
+      }
+      return acc;
+    }, {} as Record<string, string>);
+    
+    setValidationErrors(filteredErrors);
   };
 
   return {
